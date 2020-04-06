@@ -22,7 +22,7 @@ object DataBindingAdapter {
     @BindingAdapter("imageHref")
     @JvmStatic
     fun loadImage(imageView: ImageView, imageURL: String?) {
-        Glide.with(imageView.getContext())
+        Glide.with(imageView.context)
             .setDefaultRequestOptions(
                 RequestOptions()
                     .circleCrop()

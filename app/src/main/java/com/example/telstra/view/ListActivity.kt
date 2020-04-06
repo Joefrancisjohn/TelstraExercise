@@ -27,7 +27,7 @@ class ListActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = listActivityViewModel
 
-        val rvAdapter = FactsListAdaper()
+        val rvAdapter = FactsListAdapter()
         rv_fact_list.layoutManager = LinearLayoutManager(this)
         rv_fact_list.adapter = rvAdapter
         rv_fact_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
@@ -35,7 +35,7 @@ class ListActivity : AppCompatActivity() {
         listActivityViewModel.getFactsFromRepo()
 
         listActivityViewModel.factsToList.observe(this , Observer {
-            //Display the detials if facts data is not null display empty list if data is null
+            //Display the details if facts data is not null display empty list if data is null
             it?.let{
                 title = it.title
                 rvAdapter.swapData(it.rows)

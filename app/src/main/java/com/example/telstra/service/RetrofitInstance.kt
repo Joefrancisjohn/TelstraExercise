@@ -6,9 +6,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
-    const val BASE_URL = "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/"
+    private const val BASE_URL = "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/"
 
-    val okHttpClient = OkHttpClient().newBuilder()
+    private val okHttpClient = OkHttpClient().newBuilder()
         .connectTimeout(10, TimeUnit.SECONDS)
         .readTimeout(10, TimeUnit.SECONDS)
         .writeTimeout(10, TimeUnit.SECONDS)

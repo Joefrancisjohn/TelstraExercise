@@ -10,7 +10,7 @@ import com.example.telstra.databinding.FactsItemBinding
 import com.example.telstra.model.Row
 import java.util.*
 
-class FactsListAdaper : RecyclerView.Adapter<FactsListAdaper.FactsListViewHolder>() {
+class FactsListAdapter : RecyclerView.Adapter<FactsListAdapter.FactsListViewHolder>() {
 
     private var data: List<Row> = ArrayList()
 
@@ -34,7 +34,7 @@ class FactsListAdaper : RecyclerView.Adapter<FactsListAdaper.FactsListViewHolder
         notifyDataSetChanged()
     }
 
-    class FactsListViewHolder(val binding: FactsItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class FactsListViewHolder(private val binding: FactsItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Row) = with(itemView) {
             binding.factsRow = item
             binding.executePendingBindings()
