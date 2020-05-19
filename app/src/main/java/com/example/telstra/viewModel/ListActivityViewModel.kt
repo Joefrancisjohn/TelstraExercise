@@ -1,18 +1,14 @@
 package com.example.telstra.viewModel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.telstra.model.FactsData
+import com.example.telstra.model.Repository
 import com.example.telstra.service.RetrofitInstance
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.HttpException
 
-class ListActivityViewModel(application: Application) : AndroidViewModel(application) {
+class ListActivityViewModel(private val repo : Repository) : ViewModel() {
 
     //TODO Move to repo class later
     private val _factsToList: MutableLiveData<FactsData> = MutableLiveData()
@@ -24,31 +20,26 @@ class ListActivityViewModel(application: Application) : AndroidViewModel(applica
     fun getFactsFromRepo() {
         isLoading.value = true
         infoText.value = "Loading" //TODO Can move to strings
-        val service = RetrofitInstance.makeRetrofitService()
+
+        val nwResponse = repo.getAllFacts()
 
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    val response = service.getAllFacts()
-                    withContext(Dispatchers.Main) {
-                        try {
-                            if (response.isSuccessful) {
-                                val factsOut = response.body()
-                                isLoading.value = false
-                                infoText.value = null
-                                _factsToList.postValue(factsOut)
-                            } else {
-                                infoText.value = "Something went wrong ${response.code()}"
-                            }
-                        } catch (e: HttpException) {
-                            showError()
-                        } catch (e: Throwable) {
-                            showError()
-                        }
-                    }
+                val result = nwResponse.await()
+                if (result.isSuccessful) {
+                    val factsOut = result.body()
+                    infoText.value = null
+                    _factsToList.postValue(factsOut)
+                } else {
+                    infoText.value = "Something went wrong ${result.code()}"
+                    showError()
                 }
+            } catch (e: HttpException) {
+                showError()
             } catch (e: Throwable) {
                 showError()
+            } finally {
+                isLoading.value = false
             }
         }
     }

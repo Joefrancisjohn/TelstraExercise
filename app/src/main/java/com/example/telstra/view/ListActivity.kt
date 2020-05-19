@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.telstra.R
 import com.example.telstra.databinding.ActivityMainBinding
+import com.example.telstra.model.Repository
 import com.example.telstra.viewModel.ListActivityViewModel
+import com.example.telstra.viewModel.ListActivityViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -17,7 +19,8 @@ class ListActivity : AppCompatActivity() {
 
 
     private val listActivityViewModel by lazy {
-        ViewModelProvider(this).get(ListActivityViewModel::class.java)
+        val repository = Repository()
+        ViewModelProvider(this,ListActivityViewModelFactory(repository)).get(ListActivityViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
